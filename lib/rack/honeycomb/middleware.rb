@@ -66,6 +66,12 @@ module Rack
         add_env(ev, env, 'HTTP_ACCEPT')
         add_env(ev, env, 'HTTP_ACCEPT_LANGUAGE')
         add_env(ev, env, 'REMOTE_ADDR')
+
+        if options[:sample_rate_selector]
+          selector = options[:sample_rate_selector]
+          ev.sample_rate = selector[status, headers, response]
+        end
+
         ev.send
 
         [status, headers, response]
